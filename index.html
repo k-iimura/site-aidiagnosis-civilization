@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI活用スタイル診断 - 文明進化編</title>
+    <!-- Google Fonts: Inter, Noto Sans JP, Noto Serif JP, Cinzel (for Epic feel) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700;900&family=Cinzel:wght@600;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Theme: History to Future (Bronze to Neon) */
+            --primary-color: #d97706; /* Bronze/Amber */
+            --primary-light: #fbbf24; /* Gold */
+            --primary-glow: rgba(217, 119, 6, 0.5);
+            --future-color: #06b6d4; /* Cyan for high tech */
+            
+            --bg-color: #1c1917; /* Warm Black/Stone */
+            --card-bg: #292524; /* Dark Stone */
+            
+            --text-main: #e7e5e4; /* Stone Grey */
+            --text-sub: #a8a29e; /* Warm Grey */
+            
+            --accent-gradient: linear-gradient(135deg, #d97706 0%, #b45309 50%, #78350f 100%); /* Bronze Gradient */
+            --future-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); /* Cyan Gradient */
+            
+            --slider-track: #44403c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            /* Abstract Map/Constellation Background */
+            background-image: 
+                linear-gradient(rgba(28, 25, 23, 0.9), rgba(28, 25, 23, 0.95)),
+                url('https://www.transparenttextures.com/patterns/cubes.png');
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(251, 191, 36, 0.1); /* Subtle Gold Border */
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 520px;
+        }
+        
+        /* Ornamental Border Top */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #78350f, #fbbf24, #78350f);
+            z-index: 5;
+        }
+
+        /* Typography Override */
+        .epic-font {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+        }
+        .serif-font {
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        /* Start Screen */
+        .start-section {
+            padding: 70px 40px;
+            text-align: center;
+            animation: fadeIn 1s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .start-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+            display: block;
+            background: linear-gradient(to bottom right, #fbbf24, #78350f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .start-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--primary-light);
+            line-height: 1.2;
+            font-family: 'Cinzel', 'Noto Serif JP', serif;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+        
+        .start-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 30px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .start-desc {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            line-height: 2;
+            font-weight: 500;
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .start-btn {
+            display: inline-block;
+            width: 100%;
+            max-width: 300px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #292524;
+            background: var(--primary-light);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+            letter-spacing: 0.05em;
+            font-family: 'Cinzel', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .start-btn:hover {
+            background: #fffbeb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Header & Progress */
+        .header {
+            padding: 30px 32px 0;
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+        
+        .progress-label {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: 'Cinzel', sans-serif;
+        }
+        
+        .progress-percent {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 4px;
+            background-color: #44403c;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-light);
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Question Section */
+        .question-section {
+            padding: 30px 32px 40px;
+            animation: fadeIn 0.5s ease;
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            min-height: 3.6em;
+            display: flex;
+            align-items: center;
+            line-height: 1.6;
+            color: var(--text-main);
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .slider-voice-bubble {
+            background: rgba(41, 37, 36, 0.8);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-light);
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+            position: relative;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .slider-voice-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            cursor: pointer;
+            background: var(--slider-track);
+            border-radius: 0;
+        }
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 2px;
+            cursor: pointer;
+            background: var(--slider-track);
+            border-radius: 0;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #292524;
+            border: 2px solid var(--primary-light);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -11px;
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:active {
+            transform: scale(1.3);
+            background: var(--primary-light);
+        }
+        
+        .slider-scale {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding: 0 4px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .next-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #292524;
+            background: var(--primary-light);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
+            letter-spacing: 0.05em;
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            background-color: #fffbeb;
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+        }
+
+        /* Result Section */
+        .result-section {
+            display: none;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .result-header {
+            background: linear-gradient(to bottom, rgba(41, 37, 36, 0), rgba(28, 25, 23, 1));
+            padding: 30px 20px 20px;
+            color: white;
+            margin: -2px -2px 0;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: transparent;
+            color: var(--primary-light);
+            padding: 6px 16px;
+            border: 1px solid var(--primary-color);
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .result-icon {
+            font-size: 6rem;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            color: var(--primary-light);
+            font-family: 'Cinzel', serif;
+        }
+
+        .result-catch {
+            font-size: 1rem;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin-bottom: 0;
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .result-body {
+            padding: 24px 32px 40px;
+            background-color: var(--card-bg);
+        }
+        
+        /* Chart Section */
+        .chart-container {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            margin: -20px auto 20px;
+            background: rgba(28, 25, 23, 0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .connection-box {
+            background-color: rgba(28, 25, 23, 0.5);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+            border-left: 3px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 24px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .connection-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Cinzel', sans-serif;
+        }
+        .connection-title::before {
+            content: "◈";
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .connection-list {
+            list-style: none;
+        }
+
+        .connection-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .connection-list li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        .share-btn {
+            background-color: rgba(217, 119, 6, 0.1);
+            color: var(--primary-light);
+            border: 1px solid var(--primary-color);
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Cinzel', sans-serif;
+        }
+        .share-btn:hover {
+            background-color: rgba(217, 119, 6, 0.2);
+            box-shadow: 0 0 15px rgba(217, 119, 6, 0.2);
+        }
+
+        .restart-btn {
+            background: transparent;
+            color: var(--text-sub);
+            border: 1px solid var(--text-sub);
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cinzel', sans-serif;
+        }
+        .restart-btn:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { border-radius: 8px; }
+            .question-text { font-size: 1.15rem; }
+            .result-title { font-size: 1.5rem; }
+            .header { padding: 20px 20px 0; }
+            .question-section { padding: 20px 20px 30px; }
+            .result-body { padding: 20px; }
+            .start-section { padding: 40px 20px; }
+            .chart-container { height: 200px; margin-top: -20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Start Screen -->
+    <div id="start-view" class="start-section">
+        <span class="start-icon">🏛️</span>
+        <h1 class="start-title">AI活用スタイル診断</h1>
+        <div class="start-subtitle">CIVILIZATION EVOLUTION</div>
+        <p class="start-desc">
+            人類が石器から蒸気機関、<br>
+            そしてデジタルへと進化を遂げたように。<br>
+            <br>
+            あなたのビジネススタイルは今、<br>
+            歴史のどの段階にあるだろうか？<br>
+            10の設問で、その「文明レベル」を測定する。
+        </p>
+        <button class="start-btn" onclick="startApp()">BEGIN HISTORY</button>
+    </div>
+
+    <!-- Progress & Header -->
+    <div id="header" class="header">
+        <div class="progress-header">
+            <span class="progress-label">AGE <span id="current-num" class="epic-font">1</span>/10</span>
+            <span id="progress-percent" class="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- Question View -->
+    <div id="question-view" class="question-section">
+        <h2 id="question-text" class="question-text">Loading History...</h2>
+        
+        <div class="slider-container">
+            <!-- Dynamic Voice Bubble -->
+            <div id="voice-bubble" class="slider-voice-bubble">
+                AIサポート: ON
+            </div>
+
+            <input type="range" id="answer-slider" min="1" max="7" value="4" oninput="updateSliderUI(this.value)">
+            
+            <div class="slider-scale">
+                <span>MANUAL</span>
+                <span>AUTO</span>
+            </div>
+        </div>
+
+        <button class="next-btn" onclick="handleNext()">CONFIRM & EVOLVE</button>
+    </div>
+
+    <!-- Result View -->
+    <div id="result-view" class="result-section">
+        <div class="result-header">
+            <span class="result-badge">CIVILIZATION LEVEL</span>
+            <span id="result-icon" class="result-icon">✨</span>
+            <h1 id="result-title" class="result-title">ANALYZING...</h1>
+            <p id="result-catch" class="result-catch">...</p>
+        </div>
+
+        <div class="result-body">
+            <!-- Radar Chart -->
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+
+            <div class="connection-box">
+                <div class="connection-title">HISTORY RECORD</div>
+                <ul id="result-points" class="connection-list">
+                    <!-- Points will be inserted here -->
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <button class="share-btn" onclick="copyResult()">
+                    📜 RECORD HISTORY
+                </button>
+                <button class="restart-btn" onclick="resetApp()">RESTART AGE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Data Definition ---
+    // Categories: 0:探索, 1:対話, 2:創造, 3:技術, 4:判断
+    const questions = [
+        { text: "未知の分野・用語について調査し、理解を深める", cat: 0 }, // 探索
+        { text: "取引先や上司への、配慮が必要なメールの下書き作成", cat: 1 }, // 対話
+        { text: "新しい企画やアイデア出し（質より量のブレインストーミング）", cat: 2 }, // 創造
+        { text: "Excelのエラー解消や、複雑なツールの操作方法を調べる", cat: 3 }, // 技術
+        { text: "長時間の会議録画・議事録から、要点を3行でまとめる", cat: 3 }, // 技術(効率)
+        { text: "プレゼン資料の構成案（ストーリーライン）を作成する", cat: 2 }, // 創造
+        { text: "自分の思考の整理や、壁打ち相手としての対話", cat: 0 }, // 探索(分析)
+        { text: "複数の選択肢から、最適なプランを選ぶ意思決定", cat: 4 }, // 判断
+        { text: "英語など外国語ドキュメントの翻訳やニュアンス確認", cat: 1 }, // 対話
+        { text: "メンバーへのフィードバックや評価コメントの素案作成", cat: 4 }  // 判断(マネジメント)
+    ];
+
+    const voiceMessages = {
+        1: "🔥 意地でも自力でやる！",
+        2: "🔨 AIの嘘は許さない",
+        3: "⚙️ 苦手なところだけAI",
+        4: "⚖️ 人とAIのハイブリッド",
+        5: "💻 AIのほうが得意かな",
+        6: "🧠 ほぼAIにお任せ",
+        7: "🌌 秒でAIに丸投げ"
+    };
+
+    // 6 Types Definition based on range (Min 10 - Max 70)
+    // Ranges: 10-20, 21-30, 31-40, 41-50, 51-60, 61-70
+    const types = [
+        {
+            range: [10, 20],
+            name: "旧石器時代のハンター",
+            enName: "THE HUNTER",
+            icon: "🪓",
+            catch: "「獲物は自分の手で仕留める。頼れるのは肉体と勘のみ」",
+            points: [
+                "石器（自分のスキル）のみで戦う、最も原始的かつ強靭なスタイル",
+                "獲物（タスク）の手触りを誰よりも知っているが、大量生産は苦手",
+                "まずは『青銅器（簡単なAIツール）』を手に取るところから始めよう"
+            ]
+        },
+        {
+            range: [21, 30],
+            name: "中世の鍛冶職人",
+            enName: "THE BLACKSMITH",
+            icon: "⚔️",
+            catch: "「鉄を打ち、道具を作る。品質は職人の腕次第」",
+            points: [
+                "道具（ツール）を使いこなすが、動力源はあくまで自分自身",
+                "一つ一つの仕事に魂がこもるが、時間はかかる",
+                "弟子（AI）にふいごを吹かせるだけでも、仕事は楽になるはずだ"
+            ]
+        },
+        {
+            range: [31, 40],
+            name: "産業革命の機関士",
+            enName: "THE STEAM ENGINEER",
+            icon: "🚂",
+            catch: "「蒸気の力で機械を動かす。生産性が爆発的に向上する」",
+            points: [
+                "AIという『動力』を手に入れ、個人の限界を超えた馬力を発揮中",
+                "レバー操作（指示出し）は人間が行う必要がある",
+                "油断すると機械に振り回される。メンテナンス（確認）を怠るな"
+            ]
+        },
+        {
+            range: [41, 50],
+            name: "現代のプログラマー",
+            enName: "THE CODER",
+            icon: "💻",
+            catch: "「検索とコードで情報をハックし、効率を最適化する」",
+            points: [
+                "高度なツールを組み合わせ、情報戦を制する現代の魔術師",
+                "定型作業はスクリプト（AI）に任せ、創造的な設計に集中している",
+                "バグ（ハルシネーション）を見抜くデバッグ能力がカギとなる"
+            ]
+        },
+        {
+            range: [51, 60],
+            name: "近未来のサイボーグ",
+            enName: "THE CYBORG",
+            icon: "🤖",
+            catch: "「脳とAIを直結。思考した瞬間にタスクが完了する」",
+            points: [
+                "AIはもはやパートナーではなく、拡張された身体の一部",
+                "物理的な制約（作業時間）から解放されつつある",
+                "人間性と機械の境界線で、倫理的な判断力が問われる段階"
+            ]
+        },
+        {
+            range: [61, 70],
+            name: "超越的シンギュラリティ",
+            enName: "THE SINGULARITY",
+            icon: "👁️",
+            catch: "「肉体を捨て、意識がデジタルと融合した存在」",
+            points: [
+                "プロセス自体が消失し、結果のみが即座に出力される神の領域",
+                "システムが全てを最適化するため、人間の介在余地はほぼない",
+                "あなたは『誰』として意思決定をしているのか、時々思い出す必要がある"
+            ]
+        }
+    ];
+
+    // --- State Management ---
+    let currentIndex = 0;
+    let answers = []; 
+
+    // --- Initialization ---
+    function startApp() {
+        document.getElementById('start-view').style.display = 'none';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('question-view').style.display = 'block';
+        renderQuestion();
+    }
+
+    function resetApp() {
+        currentIndex = 0;
+        answers = [];
+        document.getElementById('result-view').style.display = 'none';
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('question-view').style.display = 'none';
+        document.getElementById('start-view').style.display = 'block';
+        
+        const slider = document.getElementById('answer-slider');
+        slider.value = 4;
+        updateSliderUI(4);
+    }
+
+    // --- UI Update Functions ---
+    function updateSliderUI(val) {
+        document.getElementById('voice-bubble').textContent = voiceMessages[val];
+    }
+
+    function renderQuestion() {
+        const qText = document.getElementById('question-text');
+        const currentNum = document.getElementById('current-num');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const slider = document.getElementById('answer-slider');
+
+        // Reset slider
+        slider.value = 4;
+        updateSliderUI(4);
+
+        // Update Content
+        qText.textContent = `Q${currentIndex + 1}. ${questions[currentIndex].text}`;
+        currentNum.textContent = currentIndex + 1;
+
+        // Update Progress
+        const percent = Math.round(((currentIndex) / questions.length) * 100);
+        progressFill.style.width = `${percent}%`;
+        progressPercent.textContent = `${percent}%`;
+        
+        slider.focus();
+    }
+
+    // --- Logic ---
+    function handleNext() {
+        const slider = document.getElementById('answer-slider');
+        const score = parseInt(slider.value, 10);
+        
+        answers.push(score);
+
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            renderQuestion();
+        } else {
+            const finalPercent = 100;
+            document.getElementById('progress-fill').style.width = `${finalPercent}%`;
+            document.getElementById('progress-percent').textContent = `${finalPercent}%`;
+            calculateAndShowResult();
+        }
+    }
+
+    function calculateAndShowResult() {
+        const totalScore = answers.reduce((a, b) => a + b, 0);
+
+        // Determine Type
+        let resultType = types[0];
+        for (let i = 0; i < types.length; i++) {
+            const range = types[i].range;
+            if (totalScore >= range[0] && totalScore <= range[1]) {
+                resultType = types[i];
+                break;
+            }
+        }
+
+        // Calculate Category Scores for Chart
+        // Categories: 0:探索, 1:対話, 2:創造, 3:技術, 4:判断
+        let catScores = [0, 0, 0, 0, 0];
+        answers.forEach((score, idx) => {
+            const cat = questions[idx].cat;
+            catScores[cat] += score;
+        });
+
+        renderResult(resultType, catScores);
+    }
+
+    function renderResult(data, catScores) {
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('question-view').style.display = 'none';
+        document.getElementById('result-view').style.display = 'block';
+
+        // Text Content
+        document.getElementById('result-icon').textContent = data.icon;
+        
+        // Combine JP and EN names with custom styling for visibility
+        // Ensuring the JP name (span) has a color set explicitly
+        document.getElementById('result-title').innerHTML = `${data.enName}<br><span style="font-size:0.5em; font-weight:700; color: var(--primary-light); opacity:0.9; font-family: 'Noto Serif JP', serif;">${data.name}</span>`;
+        
+        document.getElementById('result-catch').textContent = data.catch;
+
+        const pointsList = document.getElementById('result-points');
+        pointsList.innerHTML = '';
+        data.points.forEach(point => {
+            const li = document.createElement('li');
+            li.textContent = point;
+            pointsList.appendChild(li);
+        });
+
+        // Draw Chart
+        setTimeout(() => drawRadarChart(catScores), 100);
+    }
+
+    // --- Chart.js-less Radar Chart Implementation (History Theme) ---
+    function drawRadarChart(scores) {
+        const canvas = document.getElementById('radarChart');
+        const ctx = canvas.getContext('2d');
+        
+        const size = 220;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
+        ctx.scale(dpr, dpr);
+
+        const centerX = size / 2;
+        const centerY = size / 2 + 10;
+        const radius = 70;
+        const sides = 5;
+        const labels = ["EXPLORE", "TALK", "CREATE", "TECH", "JUDGE"];
+        
+        // Background Grid (Compass style)
+        ctx.strokeStyle = '#44403c';
+        ctx.lineWidth = 1;
+        
+        for (let level = 1; level <= 3; level++) {
+            ctx.beginPath();
+            for (let i = 0; i < sides; i++) {
+                const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+                const r = (radius / 3) * level;
+                const x = centerX + r * Math.cos(angle);
+                const y = centerY + r * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        // Axis Lines & Labels
+        ctx.fillStyle = '#a8a29e';
+        ctx.font = 'bold 10px Cinzel, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            const labelX = centerX + (radius + 20) * Math.cos(angle);
+            const labelY = centerY + (radius + 20) * Math.sin(angle);
+            ctx.fillText(labels[i], labelX, labelY);
+        }
+
+        // Data Shape (Golden Glow to Blue based on score?) 
+        // Let's stick to Gold/Bronze for consistent theme, maybe shift to Cyan if high score?
+        // Use gradient based on average? simpler to stick to Theme.
+        
+        ctx.beginPath();
+        const maxScore = 14;
+        
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            const normalized = 0.2 + (0.8 * (scores[i] / maxScore));
+            const r = radius * normalized;
+            const x = centerX + r * Math.cos(angle);
+            const y = centerY + r * Math.sin(angle);
+            
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        
+        // Fill
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        gradient.addColorStop(0, 'rgba(217, 119, 6, 0.4)'); // Bronze center
+        gradient.addColorStop(1, 'rgba(251, 191, 36, 0.4)'); // Gold edge
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Stroke
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#d97706';
+        ctx.shadowBlur = 15;
+        ctx.stroke();
+        ctx.shadowBlur = 0; // reset
+        
+        // Dots
+        ctx.fillStyle = '#fffbeb';
+        for (let i = 0; i < sides; i++) {
+            const angle = (Math.PI * 2 * i / sides) - (Math.PI / 2);
+            const normalized = 0.2 + (0.8 * (scores[i] / maxScore));
+            const r = radius * normalized;
+            const x = centerX + r * Math.cos(angle);
+            const y = centerY + r * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Glow for dots
+            ctx.shadowColor = '#fbbf24';
+            ctx.shadowBlur = 5;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    // --- Copy Function ---
+    async function copyResult() {
+        // Parse Title to get clean text
+        const typeNameFull = document.getElementById('result-title').textContent;
+        // Split if needed or just take full content
+        // Since we use innerHTML with <br>, textContent returns "EN NAMEJP NAME". 
+        // Let's try to grab just the EN name or construct it nicely.
+        // Actually, just grabbing the EnName from data object is hardest without state.
+        // Let's just use a generic format or try to parse the innerText which preserves newlines often.
+        const titleElem = document.getElementById('result-title');
+        const en = titleElem.childNodes[0].nodeValue; // Text node before <br>
+        
+        const textToCopy = `CIVILIZATION RECORD: ${en}\n#AI活用スタイル診断`;
+        const btn = document.querySelector('.share-btn');
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            showCopySuccess(btn);
+        } catch (err) {
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCopySuccess(btn);
+            } catch (err) {
+                btn.textContent = "FAILED";
+            }
+            document.body.removeChild(textArea);
+        }
+    }
+
+    function showCopySuccess(btn) {
+        const originalText = btn.textContent;
+        btn.textContent = "RECORDED!";
+        btn.style.borderColor = "#fbbf24";
+        btn.style.color = "#fbbf24";
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.borderColor = "";
+            btn.style.color = "";
+        }, 2000);
+    }
+    
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const qView = document.getElementById('question-view');
+            const sView = document.getElementById('start-view');
+            
+            if (sView.style.display !== 'none') {
+                startApp();
+            } else if (qView.style.display !== 'none') {
+                handleNext();
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
